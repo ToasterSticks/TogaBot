@@ -49,12 +49,12 @@ export default class extends Command {
 
 				if (runAsync) evaled = await vm.run('(async () => {' + result + '})()');
 				else evaled = await vm.run(result);
+			
+				message.client.token = token;
 			} else {
 				if (runAsync) evaled = await eval('(async () => {' + result + '})()');
 				else evaled = await eval(result);
 			}
-			
-			message.client.token = token;
 
 			if (typeof evaled != 'string') evaled = inspect(evaled, { depth: 0 });
 
