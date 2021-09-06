@@ -41,15 +41,18 @@ export default class extends Command {
 				},
 			});
 
-			let evalMethod = eval;
+			const isSandboxed = message.author.id !== '320546614857170945';
+			const runAsync = args.getFlags('async');
 
-			if (message.author.id !== '320546614857170945') {
-				evalMethod = vm.run;
+			if (isSandboxed) {
 				message.client.token = null;
-			}
 
-			if (args.getFlags('async')) evaled = await evalMethod('(async () => {' + result + '})()');
-			else evaled = await evalMethod(result);
+				if (runAsync) evaled = await vm.run('(async () => {' + result + '})()');
+				else evaled = await vm.run(result);
+			} else {
+				if (runAsync) evaled = await eval('(async () => {' + result + '})()');
+				else evaled = await eval(result);
+			}
 			
 			message.client.token = token;
 
