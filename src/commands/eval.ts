@@ -33,6 +33,7 @@ export default class extends Command {
 			message.client.token = null;
 
 			const vm = new VM({
+				eval: false,
 				timeout: 5000,
 				sandbox: {
 					Discord: require('discord.js'),
