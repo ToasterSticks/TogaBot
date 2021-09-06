@@ -30,8 +30,6 @@ export default class extends Command {
 			// message.flags.push(message.content.match(flagregex)[0]);
 			let evaled;
 
-			message.client.token = null;
-
 			const vm = new VM({
 				eval: false,
 				timeout: 2000,
@@ -43,12 +41,16 @@ export default class extends Command {
 				},
 			});
 
-			const evalMethod = message.author.id === '320546614857170945' ? eval : vm.run;
+			let evalMethod = eval;
+
+			if (message.author.id !== '320546614857170945') {
+				evalMethod = vm.run;
+				message.client.token = null;
+			}
 
 			if (args.getFlags('async')) evaled = await evalMethod('(async () => {' + result + '})()');
 			else evaled = await evalMethod(result);
 			
-
 			message.client.token = token;
 
 			if (typeof evaled != 'string') evaled = inspect(evaled, { depth: 0 });
