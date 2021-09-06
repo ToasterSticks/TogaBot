@@ -14,6 +14,9 @@ const client = new SapphireClient({
 	},
 });
 
+// @ts-expect-error
+client._eval = undefined;
+
 client.once('ready', () => {
 	console.log('YogaBot is online');
 });
