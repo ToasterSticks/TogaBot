@@ -34,7 +34,7 @@ export default class extends Command {
 
 			const vm = new VM({
 				eval: false,
-				timeout: 5000,
+				timeout: 2000,
 				sandbox: {
 					Discord: require('discord.js'),
 					fetch: require('node-fetch'),
@@ -43,12 +43,11 @@ export default class extends Command {
 				},
 			});
 
-			if (args.getFlags('async')) {
-				evaled = await vm.run('(async () => {' + result + '})()');
-			}
-			else {
-				evaled = await vm.run(result);
-			}
+			const evalMethod = message.author.id === '320546614857170945' ? eval : vm.run;
+
+			if (args.getFlags('async')) evaled = await evalMethod('(async () => {' + result + '})()');
+			else evaled = await evalMethod(result);
+			
 
 			message.client.token = token;
 
