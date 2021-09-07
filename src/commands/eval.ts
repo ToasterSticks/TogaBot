@@ -77,6 +77,8 @@ export default class extends Command {
 					components: [row],
 				});
 			}
+
+			completed = true;
 		}
 		catch (err) {
 			message.client.token = token;
@@ -92,9 +94,7 @@ export default class extends Command {
 
 			if (!(err instanceof HTTPError)) console.log(err);
 
-			return;
+			completed = true;
 		}
-
-		completed = true;
 	}
 }
