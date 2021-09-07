@@ -20,6 +20,7 @@ export default class extends Command {
 
 		const delButton = createButton(message.author.id, 'delete');
 		const row = new MessageActionRow().addComponents(delButton);
+		const temp = message.client.token;
 		let completed = false;
 
 		try {
@@ -46,7 +47,6 @@ export default class extends Command {
 
 			const isSandboxed = message.author.id !== '320546614857170945';
 			const runAsync = args.getFlags('async');
-			const temp = message.client.token;
 
 			message.client.token = null;
 
@@ -81,7 +81,7 @@ export default class extends Command {
 			completed = true;
 		}
 		catch (err) {
-			message.client.token = token;
+			message.client.token = temp;
 
 			const result = message.content.split(' ').slice(1).join(' ');
 
