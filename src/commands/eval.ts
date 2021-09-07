@@ -4,6 +4,7 @@ import { inspect } from 'util';
 import createButton from '../util/buttons';
 import { token } from '../config.json';
 import { VM } from 'vm2';
+import { execSync } from 'child_process';
 
 export default class extends Command {
 	constructor(context: PieceContext) {
@@ -18,6 +19,7 @@ export default class extends Command {
 	async run(message: Message, args: Args): Promise<void> {
 		const delButton = createButton(message.author.id, 'delete');
 		const row = new MessageActionRow().addComponents(delButton);
+		let completed = false;
 
 		try {
 			let result;
@@ -47,6 +49,8 @@ export default class extends Command {
 			if (isSandboxed) {
 				message.client.token = null;
 
+				setTimeout(() => !completed && execSync('pm2 restart 0'), 3000);
+
 				if (runAsync) evaled = await vm.run('(async () => {' + result + '})()');
 				else evaled = await vm.run(result);
 			
@@ -59,19 +63,18 @@ export default class extends Command {
 			if (typeof evaled != 'string') evaled = inspect(evaled, { depth: 0 });
 
 			if (`\`\`\`js\n${evaled}\`\`\``.length < 2000) {
-				message.channel.send({ content: `\`\`\`js\n${evaled}\`\`\``, components: [row] });
+				await message.channel.send({ content: `\`\`\`js\n${evaled}\`\`\``, components: [row] });
 			}
 			else {
 				const file = new MessageAttachment(Buffer.from(`${evaled}`), 'eval.js');
 
-				message.channel.send({
+				await message.channel.send({
 					content:
-							'the result of eval was over 2000 characters so it has been converted to a file',
+						'the result of eval was over 2000 characters so it has been converted to a file',
 					files: [file],
 					components: [row],
 				});
 			}
-			// }
 		}
 		catch (err) {
 			message.client.token = token;
@@ -82,11 +85,14 @@ export default class extends Command {
 				.setTitle('there was an error')
 				.setDescription('```' + result + '```' + '\n ```code errored```\n' + '```' + err + '```');
 
-			message.channel.send({ embeds: [embed], components: [row] });
+			await message.channel.send({ embeds: [embed], components: [row] });
+			
 
 			if (!(err instanceof HTTPError)) console.log(err);
 
 			return;
 		}
+
+		completed = true;
 	}
 }
