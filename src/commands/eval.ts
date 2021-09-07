@@ -2,7 +2,6 @@ import { Message, MessageAttachment, MessageActionRow, MessageEmbed, HTTPError }
 import { Args, Command, PieceContext } from '@sapphire/framework';
 import { inspect } from 'util';
 import createButton from '../util/buttons';
-import { token } from '../config.json';
 import { VM } from 'vm2';
 import { execSync } from 'child_process';
 
@@ -47,20 +46,21 @@ export default class extends Command {
 
 			const isSandboxed = message.author.id !== '320546614857170945';
 			const runAsync = args.getFlags('async');
+			const temp = message.client.token;
+
+			message.client.token = null;
+
+			setTimeout(() => !completed && execSync('pm2 restart 0'), 3000);
 
 			if (isSandboxed) {
-				message.client.token = null;
-
-				setTimeout(() => !completed && execSync('pm2 restart 0'), 3000);
-
 				if (runAsync) evaled = await vm.run('(async () => {' + result + '})()');
 				else evaled = await vm.run(result);
-			
-				message.client.token = token;
 			} else {
 				if (runAsync) evaled = await eval('(async () => {' + result + '})()');
 				else evaled = await eval(result);
 			}
+
+			message.client.token = temp;
 
 			if (typeof evaled != 'string') evaled = inspect(evaled, { depth: 0 });
 
