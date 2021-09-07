@@ -18,7 +18,7 @@ export default class extends Command {
 		super(context, {
 			name: 'piston',
 			description: 'evaluate code in other langs',
-			aliases: ['p', 'ps', 'piston'],
+			aliases: ['p', 'ps', 'piston', 'exec'],
 			quotes: [],
 			strategyOptions: { flags: ['lazy'] },
 		});
