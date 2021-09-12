@@ -38,7 +38,7 @@ export default class extends Command {
 			if (collector.users.size !== 3) {return void interaction.editReply(`${baseMessage} ${collector.users.size}/3 votes received.`);}
 
 			if (member.kickable) {
-				await member.kick().catch(() => collector.stop());
+				await member.kick('The council has voted that they shouldn\'t be here.').catch(() => collector.stop());
 
 				msg.edit(`L, ${Formatters.bold(member.user.tag)} was kicked.`);
 			}
