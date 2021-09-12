@@ -1,8 +1,11 @@
 import { SapphireClient } from '@sapphire/framework';
-import { GuildMember, Interaction, Message, MessageButton, MessageButtonStyle, MessageEmbed } from 'discord.js';
+import { Client, GuildMember, Interaction, Message, MessageButton, MessageButtonStyle, MessageEmbed } from 'discord.js';
 import { token } from './config.json';
 
 process.on('unhandledRejection', (err: Error) => console.error(err.stack));
+
+// @ts-expect-error
+Client.prototype._eval = undefined;
 
 const client = new SapphireClient({
 	defaultPrefix: '!',
@@ -13,9 +16,6 @@ const client = new SapphireClient({
 		properties: { $browser: 'Discord iOS' },
 	},
 });
-
-// @ts-expect-error
-client._eval = undefined;
 
 client.once('ready', () => {
 	console.log('YogaBot is online');
