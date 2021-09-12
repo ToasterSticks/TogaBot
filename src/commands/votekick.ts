@@ -4,7 +4,7 @@ import { Args, Command, PieceContext } from '@sapphire/framework';
 export default class extends Command {
 	constructor(context: PieceContext) {
 		super(context, {
-			name: 'vote',
+			name: 'votekick',
 			description: 'Vote to kick someone annoying',
 		});
 	}
