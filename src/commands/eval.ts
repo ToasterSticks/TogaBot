@@ -55,10 +55,9 @@ export default class extends Command {
 			if (isSandboxed) {
 				if (runAsync) evaled = await vm.run('(async () => {' + result + '})()');
 				else evaled = await vm.run(result);
-			} else {
-				if (runAsync) evaled = await eval('(async () => {' + result + '})()');
-				else evaled = await eval(result);
 			}
+			else if (runAsync) {evaled = await eval('(async () => {' + result + '})()');}
+			else {evaled = await eval(result);}
 
 			message.client.token = temp;
 
@@ -90,7 +89,7 @@ export default class extends Command {
 				.setDescription('```' + result + '```' + '\n ```code errored```\n' + '```' + err + '```');
 
 			await message.channel.send({ embeds: [embed], components: [row] });
-			
+
 
 			if (!(err instanceof HTTPError)) console.log(err);
 
