@@ -10,6 +10,8 @@ export default class extends Command {
 	}
 
 	async run(message: Message, args: Args) {
+		if (!message.member!.roles.cache.has('806673323463278622')) return message.reply('Hahaha, imagine being a pleb!');
+
 		const member = await args.pick('member').catch(() => null);
 
 		if (!member) return message.channel.send('You need to provide a member, you dumbass!');
