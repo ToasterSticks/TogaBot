@@ -40,6 +40,7 @@ export default class extends Command {
 				sandbox: {
 					Discord: require('discord.js'),
 					fetch: require('node-fetch'),
+					client: message.client,
 					message,
 					args,
 				},
