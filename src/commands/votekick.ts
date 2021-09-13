@@ -16,6 +16,8 @@ export default class extends Command {
 
 		if (!member) return message.channel.send('You need to provide a member, you dumbass!');
 
+		if (member.id === message.author.id) return message.channel.send('I\'m pretty sure you wouldn\'t want to do this.');
+
 		const baseMessage = `Kick ${Formatters.bold(member.user.tag)} (${Formatters.inlineCode(
 			member.id,
 		)})?`;
