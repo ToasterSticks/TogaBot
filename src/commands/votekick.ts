@@ -19,9 +19,7 @@ export default class extends Command {
 
 		if (member.id === message.author.id) return message.channel.send('I\'m pretty sure you wouldn\'t want to do this.');
 
-		const baseMessage = `Kick ${Formatters.bold(member.user.tag)} (${Formatters.inlineCode(
-			member.id,
-		)})?`;
+		const baseMessage = `Is ${Formatters.bold(member.user.tag)} the impostor?`;
 
 		const msg = await message.channel.send({
 			content: baseMessage,
