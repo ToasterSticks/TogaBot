@@ -5,6 +5,7 @@ export default class extends Command {
 	constructor(context: PieceContext) {
 		super(context, {
 			name: 'votekick',
+			aliases: ['eject'],
 			description: 'Vote to kick someone annoying',
 		});
 	}
@@ -40,9 +41,13 @@ export default class extends Command {
 			if (collector.users.size !== 3) {return void interaction.editReply(`${baseMessage} ${collector.users.size}/3 votes received.`);}
 
 			if (member.kickable) {
-				await member.kick('The council has voted that they shouldn\'t be here.').catch(() => collector.stop());
+				await member.kick('They were an impostor, and were ejected.').catch(() => collector.stop());
 
-				msg.edit(`L, ${Formatters.bold(member.user.tag)} was kicked.`);
+				const count = Math.ceil(Math.random() * 5);
+
+				msg.edit(
+					`${Formatters.bold(member.user.tag)} was ejected. ${count} impostor${count > 1 ? 's' : ''} remains.`,
+				);
 			}
 			else {
 				msg.edit('I dont have permissions to kick this user, you fool.');
