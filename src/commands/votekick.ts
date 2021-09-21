@@ -38,17 +38,17 @@ export default class extends Command {
 
 			if (collector.users.size !== 3) {return void interaction.editReply(`${baseMessage} ${collector.users.size}/3 votes received.`);}
 
+			const count = Math.ceil(Math.random() * 5);
+			const plural = count === 1 ? '' : 's';
+			const impostorCount = `${count} impostor${plural} remain${plural}.`;
+
 			if (member.kickable) {
 				await member.kick('They were an impostor, and were ejected.').catch(() => collector.stop());
 
-				const count = Math.ceil(Math.random() * 5);
-
-				msg.edit(
-					`${Formatters.bold(member.user.tag)} was ejected. ${count} impostor${count > 1 ? 's' : ''} remains.`,
-				);
+				msg.edit(`${Formatters.bold(member.user.tag)} was ejected. ${impostorCount}`);
 			}
 			else {
-				msg.edit('I dont have permissions to kick this user, you fool.');
+				msg.edit(`${Formatters.bold(member.user.tag)} was not an impostor. ${impostorCount}`);
 			}
 
 			collector.stop();
