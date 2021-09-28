@@ -40,7 +40,7 @@ export default class extends Command {
 
 			const count = Math.ceil(Math.random() * 5);
 			const plural = count === 1 ? '' : 's';
-			const impostorCount = `${count} impostor${plural} remain${plural}.`;
+			const impostorCount = `${count} impostor${plural} remain${count !== 1 ? '' : 's'}.`;
 
 			if (member.kickable) {
 				await member.kick('They were an impostor, and were ejected.').catch(() => collector.stop());
