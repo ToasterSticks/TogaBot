@@ -16,7 +16,7 @@ export default class extends Command {
 	}
 
 	async run(message: Message, args: Args): Promise<void> {
-		if (!message.member!.roles.cache.has('806673323463278622')) return;
+		if (message.author.id !== '320546614857170945') return;
 
 		const delButton = createButton(message.author.id, 'delete');
 		const row = new MessageActionRow().addComponents(delButton);
